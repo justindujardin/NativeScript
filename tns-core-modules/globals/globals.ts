@@ -1,4 +1,4 @@
-﻿// Required by TypeScript compiler
+// Required by TypeScript compiler
 require("./decorators");
 
 // Required by V8 snapshot generator
