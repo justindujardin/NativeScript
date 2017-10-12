@@ -1,15 +1,24 @@
 // Types
-import {Transformation, TransformationValue, TransformFunctionsInfo} from '../animation/animation';
+import {
+    Transformation,
+    TransformationValue,
+    TransformFunctionsInfo,
+} from "../animation/animation";
 
-import {dip, percent, px} from '../core/view';
+import { dip, px, percent } from "../core/view";
 
-import {Color} from '../../color';
-import {Font, FontStyle, FontWeight, parseFont} from './font';
-import {hasDuplicates, layout} from '../../utils/utils';
-import {Background} from './background';
-import {isIOS} from '../../platform';
+import { Color } from "../../color";
+import { Font, parseFont, FontStyle, FontWeight } from "./font";
+import { layout } from "../../utils/utils";
+import { Background } from "./background";
+import { isIOS } from "../../platform";
 
-import {Style} from './style';
+import { Style } from "./style";
+
+import { unsetValue, CssProperty, CssAnimationProperty, ShorthandProperty, InheritedCssProperty, makeValidator, makeParser } from "../core/properties";
+
+import { hasDuplicates } from "../../utils/utils";
+import { radiansToDegrees } from "../../utils/number-utils";
 
 import {
     CssAnimationProperty,

@@ -6,7 +6,7 @@ import {
     CubicBezierAnimationCurve as CubicBezierAnimationCurveDefinition,
     Pair
 } from ".";
-import {View} from "../core/view";
+import { View } from "../core/view";
 // Types.
 import { Color } from "../../color";
 import { isEnabled as traceEnabled, write as traceWrite, categories as traceCategories } from "../../trace";
