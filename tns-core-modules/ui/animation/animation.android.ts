@@ -434,22 +434,24 @@ export class Animation extends AnimationBase {
             case Properties.width:
             case Properties.height: {
 
-                const isVertical: boolean = propertyAnimation.property === 'height';
-                const extentProperty = isVertical ? heightProperty : widthProperty;
-
-                extentProperty._initDefaultNativeValue(style);
-                nativeArray = Array.create("float", 2);
-                let toValue = propertyAnimation.value;
                 let parent = propertyAnimation.target.parent as View;
                 if (!parent) {
                     throw new Error(`cannot animate ${propertyAnimation.property} on root view`);
                 }
-                const parentExtent: number = isVertical ? parent.getMeasuredHeight() : parent.getMeasuredWidth();
-                toValue = PercentLength.toDevicePixels(toValue, parentExtent, parentExtent) / platform.screen.mainScreen.scale;
-                const nativeHeight: number = isVertical ? nativeView.getHeight() : nativeView.getWidth();
-                const targetStyle: string = setLocal ? extentProperty.name : extentProperty.keyframe;
-                originalValue1 = nativeHeight / platform.screen.mainScreen.scale;
-                nativeArray[0] = originalValue1;
+
+                const isVertical: boolean = propertyAnimation.property === 'height';
+                const extentProperty = isVertical ? heightProperty : widthProperty;
+                extentProperty._initDefaultNativeValue(style);
+
+                const scale = platform.screen.mainScreen.scale;
+                const max: number = isVertical ? parent.getMeasuredHeight() : parent.getMeasuredWidth();
+                const nativeExtent: number = isVertical ? nativeView.getHeight() : nativeView.getWidth();
+
+                const toValue = PercentLength.toDevicePixels(propertyAnimation.value, max, max) / scale;
+                const fromValue = nativeExtent / scale;
+
+                nativeArray = Array.create("float", 2);
+                nativeArray[0] = fromValue;
                 nativeArray[1] = toValue;
                 let extentAnimator = android.animation.ValueAnimator.ofFloat(nativeArray);
                 extentAnimator.addUpdateListener(new android.animation.ValueAnimator.AnimatorUpdateListener({
@@ -458,11 +460,12 @@ export class Animation extends AnimationBase {
                         propertyAnimation.target.style[setLocal ? extentProperty.name : extentProperty.keyframe] = argb;
                     }
                 }));
+                const targetStyle: string = setLocal ? extentProperty.name : extentProperty.keyframe;
                 propertyUpdateCallbacks.push(checkAnimation(() => {
                     propertyAnimation.target.style[targetStyle] = propertyAnimation.value;
                 }));
                 propertyResetCallbacks.push(checkAnimation(() => {
-                    propertyAnimation.target.style[targetStyle] = originalValue1;
+                    propertyAnimation.target.style[targetStyle] = fromValue;
                     if (propertyAnimation.target.nativeViewProtected) {
                         const setter = propertyAnimation.target[extentProperty.setNative];
                         setter(propertyAnimation.target.style[propertyAnimation.property]);
