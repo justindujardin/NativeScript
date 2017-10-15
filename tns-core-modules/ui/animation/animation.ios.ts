@@ -86,11 +86,16 @@ class AnimationDelegateImpl extends NSObject implements CAAnimationDelegate {
                 targetStyle[setLocal ? translateXProperty.name : translateXProperty.keyframe] = value;
                 targetStyle[setLocal ? translateYProperty.name : translateYProperty.keyframe] = value;
                 break;
-            case Properties.height:
-                targetStyle[setLocal ? heightProperty.name : heightProperty.keyframe] = value;
-                break;
             case Properties.width:
-                targetStyle[setLocal ? widthProperty.name : widthProperty.keyframe] = value;
+            case Properties.height:
+                const isVertical: boolean = this._propertyAnimation.property === Properties.height;
+                const extentProp = isVertical ? heightProperty : widthProperty;
+                targetStyle[setLocal ? extentProp.name : extentProp.keyframe] = value;
+                // the extent is set here to trigger a layout while the animation happens. This removes
+                // a potential flash of initial dimensions when the animation completes while the layout
+                // system sets the new positions.
+                this._propertyAnimation.target[this._propertyAnimation.property] = value;
+
                 break;
             case Properties.scale:
                 targetStyle[setLocal ? scaleXProperty.name : scaleXProperty.keyframe] = value.x === 0 ? 0.001 : value.x;
