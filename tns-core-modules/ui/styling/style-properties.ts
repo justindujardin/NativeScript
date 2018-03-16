@@ -15,10 +15,7 @@ import { isIOS } from "../../platform";
 
 import { Style } from "./style";
 
-import { unsetValue, CssProperty, CssAnimationProperty, ShorthandProperty, InheritedCssProperty, makeValidator, makeParser } from "../core/properties";
-
 import { hasDuplicates } from "../../utils/utils";
-import { radiansToDegrees } from "../../utils/number-utils";
 
 import {
     CssAnimationProperty,

@@ -1,4 +1,4 @@
-// Definitions.
+﻿// Definitions.
 import {
     CubicBezierAnimationCurve as CubicBezierAnimationCurveDefinition,
     AnimationPromise as AnimationPromiseDefinition,
@@ -9,8 +9,6 @@ import {
 import { View } from "../core/view";
 
 // Types.
-import { Color } from "../../color";
-import { isEnabled as traceEnabled, write as traceWrite, categories as traceCategories } from "../../trace";
 import { Color } from "../../color";
 import { isEnabled as traceEnabled, write as traceWrite, categories as traceCategories, messageType as traceType } from "../../trace";
 import {PercentLength} from "../styling/style-properties";
